@@ -28,7 +28,7 @@ namespace ProductDevelopment.Web
         private static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(_kernel.TryGet(typeof(UserProviderFilterAttribute)));
+            filters.Add(_kernel.TryGet(typeof (UserProviderFilterAttribute)));
         }
 
         private static void RegisterRoutes(RouteCollection routes)
@@ -45,12 +45,15 @@ namespace ProductDevelopment.Web
         private static void RegisterDependencyResolver()
         {
             _kernel = new StandardKernel();
-            _kernel.Bind<IAuthentication>().To<Authentication>().InRequestScope();
-            _kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             _kernel.Bind<IRepository<Defect>>().To<Repository<Defect>>().InRequestScope();
             _kernel.Bind<IRepository<Project>>().To<Repository<Project>>().InRequestScope();
             _kernel.Bind<IRepository<Severity>>().To<Repository<Severity>>().InRequestScope();
             _kernel.Bind<UserProviderFilterAttribute>().To<UserProviderFilterAttribute>().InRequestScope();
+
+            var types = new DefaultIocConventions().GetTypesThatShouldBeRegisteredTogether();
+            foreach (var type in types.Keys)
+                _kernel.Bind(type).To(types[type]).InRequestScope();
+
             DependencyResolver.SetResolver(new NinjectDependencyResolver(_kernel));
         }
     }

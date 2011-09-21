@@ -81,6 +81,7 @@
     <Compile Include="Controllers\DefectsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="DefaultIocConventions.asax.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
