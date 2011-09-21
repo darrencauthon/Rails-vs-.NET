@@ -1,17 +1,42 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Web.Mvc;
-using Moq;
-using NUnit.Framework;
-using ProductDevelopment.Models;
+using AutoMoq.Helpers;
+using Machine.Specifications;
 using ProductDevelopment.Web.Controllers;
-using ProductDevelopment.Web.Infrastructure.Data;
 using ProductDevelopment.Web.Models;
-using Should;
 
 namespace ProductDevelopment.Tests.Controllers
 {
+    [Subject(typeof (DefectsController))]
+    public class when_someone_visits_the_defects_page : with_automoqer
+    {
+        private Establish context =
+            () =>
+                {
+                    expectedSearchResults = new DefectSearchResultsViewModel[] {};
+                    GetMock<IDefaultSearchResultsRetriever>()
+                        .Setup(x => x.GetSearchResults())
+                        .Returns(expectedSearchResults);
 
+                    controller = Create<DefectsController>();
+                };
+
+        private Because of =
+            () => result = controller.Index();
+
+        private It should_return_a_view_result =
+            () => result.ShouldBeOfType(typeof (ViewResult));
+
+        private It should_set_the_view_name_to_index =
+            () => result.CastAs<ViewResult>().ViewName.ShouldEqual("Index");
+
+        private It should_return_the_defect_search_results =
+            () => result.CastAs<ViewResult>().Model.ShouldBeTheSameAs(expectedSearchResults);
+
+        private static DefectsController controller;
+        private static ActionResult result;
+        private static DefectSearchResultsViewModel[] expectedSearchResults;
+    }
 
     //[TestFixture]
     //public class DefectsControllerTests

@@ -4,7 +4,6 @@ namespace ProductDevelopment.Web.Models
 {
     public class DefectSearchResultsViewModel
     {
-        public int Id { get; set; }
         public string Project { get; set; }
         public string Summary { get; set; }
         public string Severity { get; set; }

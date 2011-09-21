@@ -9,27 +9,31 @@ namespace ProductDevelopment.Web.Controllers
 {
     public class DefectsController : Controller
     {
-        private readonly IRepository<Defect> _defectRepo;
-        private readonly IRepository<Project> _projectRepo;
-        private readonly IUserRepository _userRepo;
-        private readonly IRepository<Severity> _severityRepo;
+        private readonly IDefaultSearchResultsRetriever defaultSearchResultsRetriever;
+        //private readonly IRepository<Defect> _defectRepo;
+        //private readonly IRepository<Project> _projectRepo;
+        //private readonly IUserRepository _userRepo;
+        //private readonly IRepository<Severity> _severityRepo;
 
-        public DefectsController(IRepository<Defect> defectRepo,
-                                 IRepository<Project> projectRepo,
-                                 IUserRepository userRepo,
-                                 IRepository<Severity> severityRepo)
+        //public DefectsController(IRepository<Defect> defectRepo,
+        //                         IRepository<Project> projectRepo,
+        //                         IUserRepository userRepo,
+        //                         IRepository<Severity> severityRepo)
+        //{
+        //    _defectRepo = defectRepo;
+        //    _projectRepo = projectRepo;
+        //    _userRepo = userRepo;
+        //    _severityRepo = severityRepo;
+        //}
+
+        public DefectsController(IDefaultSearchResultsRetriever defaultSearchResultsRetriever)
         {
-            _defectRepo = defectRepo;
-            _projectRepo = projectRepo;
-            _userRepo = userRepo;
-            _severityRepo = severityRepo;
+            this.defaultSearchResultsRetriever = defaultSearchResultsRetriever;
         }
 
-        public ViewResult Index()
+        public ActionResult Index()
         {
-            //var viewModels = ViewModels();
-            //return View(viewModels);
-            return null;
+            return View("Index", defaultSearchResultsRetriever.GetSearchResults());
         }
 
         //public ViewResult Create()
